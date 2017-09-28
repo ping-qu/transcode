@@ -23,12 +23,12 @@ class Transcode
             'output_file'=>$objectKeyTarget,
             'file_type'=>$type,
             'preset_id'=>$preset_id,
-            'pipeline'=>$pipeline_id,
+            'pipeline_id'=>$pipeline_id,
             'server_id'=>$this->server_id,
             'sign'=>$this->sign,
         );
         $response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/v4_1/upload_complete','POST',$params);
-        return $response;
+        return $response->getBody();
     }
 
 
@@ -38,6 +38,6 @@ class Transcode
             'sign'=>$this->sign,
         );
         $response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/api/livejob','POST',$params);
-        return $response;
+        return $response->getBody();
     }
 }
