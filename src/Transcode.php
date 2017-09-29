@@ -9,12 +9,12 @@ namespace Pingqu;
 
 class Transcode
 {
-    protected $server_id;
-    protected $sign;
-    public function __construct($server_id,$sign)
+    protected $access_key;
+    protected $access_secret;
+    public function __construct($access_key,$access_secret)
     {
-        $this->server_id = $server_id;
-        $this->sign = $sign;
+        $this->access_key = $access_key;
+        $this->access_secret = $access_secret;
     }
 
     public function addVideoJob($objectKeyInput, $objectKeyTarget, $type, $preset_id, $pipeline_id){
@@ -24,20 +24,27 @@ class Transcode
             'file_type'=>$type,
             'preset_id'=>$preset_id,
             'pipeline_id'=>$pipeline_id,
-            'server_id'=>$this->server_id,
-            'sign'=>$this->sign,
+            'access_key'=>$this->access_key,
         );
-        $response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/v4_1/upload_complete','POST',$params);
+        $header = array(
+            'signature'=>\Pingqu\Auth\Signature::doSignMd5($params,$this->access_secret)
+        );
+        //$response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/v4_1/upload_complete','POST',$params,$header);
+        $response = \Pingqu\Http\HttpHelper::curl('10.8.8.99/v4_1/upload_complete','POST',$params,$header);//
         return $response->getBody();
     }
 
 
     public function addLiveJob(){
+
         $params = array(
-            'server_id'=>$this->server_id,
-            'sign'=>$this->sign,
+            'access_key'=>$this->access_key,
+
         );
-        $response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/api/livejob','POST',$params);
+        $header = array(
+            'signature'=>\Pingqu\Auth\Signature::doSignMd5($params,$this->access_secret)
+        );
+        $response = \Pingqu\Http\HttpHelper::curl('yun.linyue.hznwce.com/api/livejob','POST',$params,$header);
         return $response->getBody();
     }
 }
