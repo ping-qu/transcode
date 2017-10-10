@@ -29,7 +29,7 @@ class Transcode
         $header = array(
             'signature'=>\Pingqu\Auth\Signature::doSignMd5($params,$this->access_secret)
         );
-        $response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/v4_1/add_video_job','POST',$params,$header);
+        $response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/api/add_video_job','POST',$params,$header);
         //$response = \Pingqu\Http\HttpHelper::curl('10.8.8.99/v4_1/upload_complete','POST',$params,$header);//
         return $response->getBody();
     }
