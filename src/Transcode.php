@@ -31,7 +31,7 @@ class Transcode
         );
         $response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/api/add_video_job','POST',$params,$header);
         //$response = \Pingqu\Http\HttpHelper::curl('10.8.8.99/v4_1/upload_complete','POST',$params,$header);//
-        return json_decode($response->getBody());
+        return json_decode($response->getBody(),true);
     }
 
 
@@ -46,7 +46,7 @@ class Transcode
         );
         //$response = \Pingqu\Http\HttpHelper::curl('yun.linyue.hznwce.com/api/livejob','POST',$params,$header);
         $response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/api/livejob','POST',$params,$header);
-        return json_decode($response->getBody());
+        return json_decode($response->getBody(),true);
     }
 
     public function transcodeAgain($input_file){
@@ -63,6 +63,6 @@ class Transcode
         );
         $response = \Pingqu\Http\HttpHelper::curl('yun.linyue.hznwce.com/api/transcode_again','POST',$params,$header);
         //$response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/api/transcode_again','POST',$params,$header);
-        return json_decode($response->getBody());
+        return json_decode($response->getBody(),true);
     }
 }
