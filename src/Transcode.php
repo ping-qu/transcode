@@ -61,8 +61,47 @@ class Transcode
         $header = array(
             'signature'=>\Pingqu\Auth\Signature::doSignMd5($params,$this->access_secret)
         );
-        $response = \Pingqu\Http\HttpHelper::curl('yun.linyue.hznwce.com/api/transcode_again','POST',$params,$header);
-        //$response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/api/transcode_again','POST',$params,$header);
+        //$response = \Pingqu\Http\HttpHelper::curl('yun.linyue.hznwce.com/api/transcode_again','POST',$params,$header);
+        $response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/api/transcode_again','POST',$params,$header);
+        return json_decode($response->getBody(),true);
+    }
+
+    public function startLive($stream_name){
+        $params = array(
+            'sessionid'=>$stream_name,
+            'access_key'=>$this->access_key,
+        );
+        $header = array(
+            'signature'=>\Pingqu\Auth\Signature::doSignMd5($params,$this->access_secret)
+        );
+        //$response = \Pingqu\Http\HttpHelper::curl('yun.linyue.hznwce.com/api/transcode_again','POST',$params,$header);
+        $response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/api/start_live','POST',$params,$header);
+        return json_decode($response->getBody(),true);
+    }
+
+    public function pauseLive($stream_name){
+        $params = array(
+            'sessionid'=>$stream_name,
+            'access_key'=>$this->access_key,
+        );
+        $header = array(
+            'signature'=>\Pingqu\Auth\Signature::doSignMd5($params,$this->access_secret)
+        );
+        //$response = \Pingqu\Http\HttpHelper::curl('yun.linyue.hznwce.com/api/transcode_again','POST',$params,$header);
+        $response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/api/pause_live','POST',$params,$header);
+        return json_decode($response->getBody(),true);
+    }
+
+    public function stopLive($stream_name){
+        $params = array(
+            'sessionid'=>$stream_name,
+            'access_key'=>$this->access_key,
+        );
+        $header = array(
+            'signature'=>\Pingqu\Auth\Signature::doSignMd5($params,$this->access_secret)
+        );
+        //$response = \Pingqu\Http\HttpHelper::curl('yun.linyue.hznwce.com/api/transcode_again','POST',$params,$header);
+        $response = \Pingqu\Http\HttpHelper::curl('api.cloud.ping-qu.com/api/stop_live','POST',$params,$header);
         return json_decode($response->getBody(),true);
     }
 }
