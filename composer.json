@@ -4,7 +4,8 @@
 	"version": "0.0.1",
 	"require": {
 		"php": ">=5.3",
-		"ping-qu/exception": "0.0.*"
+		"ping-qu/exception": "0.0.*",
+		"ping-qu/core": "0.0.1.x-dev"
 	},
 	"require-dev": {
 	},

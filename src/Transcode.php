@@ -112,4 +112,16 @@ class Transcode
         $response = \Pingqu\Http\HttpHelper::curl($this->url.'/api/stop_live','POST',$params,$header);
         return json_decode($response->getBody(),true);
     }
+    //获取推流token
+    public function getToken($stream_name){
+        $params = array(
+            'sessionid'=>$stream_name,
+            'access_key'=>$this->access_key,
+        );
+        $header = array(
+            'signature'=>\Pingqu\Auth\Signature::doSignMd5($params,$this->access_secret)
+        );
+        $response = \Pingqu\Http\HttpHelper::curl($this->url.'/api/live_token','POST',$params,$header);
+        return json_decode($response->getBody(),true);
+    }
 }
