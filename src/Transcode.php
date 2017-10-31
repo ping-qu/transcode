@@ -125,4 +125,14 @@ class Transcode
         $response = \Pingqu\Http\HttpHelper::curl($this->url.'/api/live_token','POST',$params,$header);
         return json_decode($response->getBody(),true);
     }
+
+
+    public function signature($params,$access_secret,$signatureData){
+        $signature = \Pingqu\Auth\Signature::doSignMd5($params,$access_secret);
+        if ($signature == $signatureData){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
