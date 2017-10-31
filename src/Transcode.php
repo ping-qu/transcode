@@ -11,12 +11,13 @@ class Transcode
 {
     protected $access_key;
     protected $access_secret;
-    protected $url = 'api.cloud.ping-qu.com';
+    protected $url;
 
-    public function __construct($access_key,$access_secret)
+    public function __construct($endpoint = 'api.cloud.ping-qu.com',$access_key,$access_secret)
     {
         $this->access_key = $access_key;
         $this->access_secret = $access_secret;
+        $this->url = $endpoint;
     }
 
     //添加视频转码任务
