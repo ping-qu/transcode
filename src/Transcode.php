@@ -11,12 +11,13 @@ class Transcode
 {
     protected $access_key;
     protected $access_secret;
-    protected $url = 'api.cloud.ping-qu.com';
+    protected $url;
 
-    public function __construct($access_key,$access_secret)
+    public function __construct($endpoint,$access_key,$access_secret)
     {
         $this->access_key = $access_key;
         $this->access_secret = $access_secret;
+        $this->url = $endpoint;
     }
 
     //添加视频转码任务
@@ -54,19 +55,14 @@ class Transcode
 
 
     //重新转码
-    public function transcodeAgain($input_file){
-        $objectKey = $input_file;
-        if (substr($objectKey, 0, 1) === '/') {
-            $objectKey = substr($objectKey, 1);
-        }
+    public function transcodeAgain($job_id){
         $params = array(
-            'input_file'=>$objectKey,
+            'job_id'=>$job_id,
             'access_key'=>$this->access_key,
         );
         $header = array(
             'signature'=>\Pingqu\Auth\Signature::doSignMd5($params,$this->access_secret)
         );
-        //$response = \Pingqu\Http\HttpHelper::curl('yun.linyue.hznwce.com/api/transcode_again','POST',$params,$header);
         $response = \Pingqu\Http\HttpHelper::curl($this->url.'/api/transcode_again','POST',$params,$header);
         return json_decode($response->getBody(),true);
     }
@@ -123,5 +119,15 @@ class Transcode
         );
         $response = \Pingqu\Http\HttpHelper::curl($this->url.'/api/live_token','POST',$params,$header);
         return json_decode($response->getBody(),true);
+    }
+
+
+    public function signature($params,$signatureData){
+        $signature = \Pingqu\Auth\Signature::doSignMd5($params,$this->access_secret);
+        if ($signature == $signatureData){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
