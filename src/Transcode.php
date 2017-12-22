@@ -122,8 +122,8 @@ class Transcode
     }
 
 
-    public function signature($params,$access_secret,$signatureData){
-        $signature = \Pingqu\Auth\Signature::doSignMd5($params,$access_secret);
+    public function signature($params,$signatureData){
+        $signature = \Pingqu\Auth\Signature::doSignMd5($params,$this->access_secret);
         if ($signature == $signatureData){
             return true;
         }else{
