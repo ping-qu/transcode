@@ -7,6 +7,8 @@
  */
 namespace Pingqu;
 
+use Pingqu\Exception\ApiException;
+
 class Transcode
 {
     protected $access_key;
@@ -128,6 +130,18 @@ class Transcode
             return true;
         }else{
             return false;
+        }
+    }
+
+    public function getCallbackData(){
+        $data = $_POST;
+        $signatureData = $data['signature'];
+        unset($data['signature']);
+        $signature = \Pingqu\Auth\Signature::doSignMd5($data,$this->access_secret);
+        if ($signature == $signatureData){
+            return $data;
+        }else{
+            throw new ApiException('签名失败');
         }
     }
 }
