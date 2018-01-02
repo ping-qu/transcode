@@ -14,12 +14,21 @@ class Transcode
     protected $access_key;
     protected $access_secret;
     protected $url;
+    private $callback_params;
 
     public function __construct($endpoint,$access_key,$access_secret)
     {
         $this->access_key = $access_key;
         $this->access_secret = $access_secret;
         $this->url = $endpoint;
+    }
+
+    public function setCallbackParams($params){
+        if (!is_string($params)){
+            throw new ApiException('自定义回调参数只能是字符串类型');
+        }
+        $this->callback_params = $params;
+        return $this;
     }
 
     //添加视频转码任务
@@ -32,6 +41,9 @@ class Transcode
             'pipeline_id'=>$pipeline_id,
             'access_key'=>$this->access_key,
         );
+        if (isset($this->callback_params)){
+            $params['callback_params'] = $this->callback_params;
+        }
         $header = array(
             'signature'=>\Pingqu\Auth\Signature::doSignMd5($params,$this->access_secret)
         );
