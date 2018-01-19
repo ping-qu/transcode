@@ -15,6 +15,7 @@ class Transcode
     protected $access_secret;
     protected $url;
     private $callback_params;
+    private $callbacl_url;
 
     public function __construct($endpoint,$access_key,$access_secret)
     {
@@ -31,6 +32,15 @@ class Transcode
         return $this;
     }
 
+
+    public function setCallbackUrl($url){
+        if (!is_string($url)){
+            throw new ApiException('回调地址格式错误');
+        }
+        $this->callbacl_url = $url;
+        return $this;
+    }
+
     //添加视频转码任务
     public function addVideoJob($objectKeyInput, $objectKeyTarget, $type, $preset_id, $pipeline_id){
         $params = array(
@@ -43,6 +53,9 @@ class Transcode
         );
         if (isset($this->callback_params)){
             $params['callback_params'] = $this->callback_params;
+        }
+        if (isset($this->callbacl_url)){
+            $params['callback_url'] = $this->callbacl_url;
         }
         $header = array(
             'signature'=>\Pingqu\Auth\Signature::doSignMd5($params,$this->access_secret)
